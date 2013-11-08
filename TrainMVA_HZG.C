@@ -26,7 +26,7 @@
 #endif
 
 
-TString inputFilesDir = "mvaInputs_v71/muon/";
+TString inputFilesDir = "../HiggsZGAnalyzer/mvaFiles/";
 //TString inputFilesDir = "mvaInputs_v69/muon/";
 TString outputWeightsDir = "";
 
@@ -39,7 +39,6 @@ Bool_t USE_SEPARATE_TRAIN_TEST_FILES = true;
 void TrainMva(TString myMethodList = "",
     TString _signalName,
     TString _bgName,
-    Int_t _jetMulti,
     Int_t _numSignalTrain = 0,
     Int_t _numBgTrain = 0,
     Int_t _numSignalTest = 0,
@@ -86,30 +85,6 @@ void TrainMva(TString myMethodList = "",
     bgFileName_train = inputFilesDir + "ttbar_train.root";
     bgFileName_test = inputFilesDir + "ttbar_test.root";
     bgFileName = inputFilesDir + "ttbar.root"; // when it is common. 
-  } else if (_bgName == "dymm") {
-    bgFileName_train = inputFilesDir + "dymm_train.root";
-    bgFileName_test = inputFilesDir + "dymm_test.root";
-    bgFileName = inputFilesDir + "dymm.root"; // when it is common.
-  } else if (_bgName == "dyee") {
-    bgFileName_train = inputFilesDir + "dyee_train.root";
-    bgFileName_test = inputFilesDir + "dyee_test.root";
-    bgFileName = inputFilesDir + "dyee.root"; // when it is common.
-  } else if (_bgName == "dytt") {
-    bgFileName_train = inputFilesDir + "dytt_train.root";
-    bgFileName_test = inputFilesDir + "dytt_test.root";
-    bgFileName = inputFilesDir + "dytt.root"; // when it is common.
-  } else if (_bgName == "allBg") {
-    bgFileName_train = inputFilesDir + "allBg_train.root";
-    bgFileName_test = inputFilesDir + "allBg_test.root";
-    bgFileName = inputFilesDir + "allBg.root"; // when it is common.
-  } else if (_bgName == "allBg2") {
-    bgFileName_train = inputFilesDir + "allBg2_train.root";
-    bgFileName_test = inputFilesDir + "allBg2_test.root";
-    bgFileName = inputFilesDir + "allBg2.root"; // when it is common.
-  } else if (_bgName == "allBgPhoton") {
-    bgFileName_train = inputFilesDir + "allBgPhoton_train.root";
-    bgFileName_test = inputFilesDir + "allBgPhoton_test.root";
-    bgFileName = inputFilesDir + "allBgPhoton.root"; // when it is common.
   } else {
     std::cout << "\n\nUnknown background \"" << _bgName << "\". Check Input!\n\n";
     return;
@@ -124,109 +99,14 @@ void TrainMva(TString myMethodList = "",
     sigFileName_train = inputFilesDir + "hzz200_train.root";
     sigFileName_test = inputFilesDir + "hzz200_test.root";
     sigFileName = inputFilesDir + "hzz200.root";
-  } else if (_signalName == "hzz250") {
-    sigFileName_train = inputFilesDir + "hzz250_train.root"; /// TMP (AA) select gg explicitly for testing
-    sigFileName_test = inputFilesDir + "hzz250_test.root";
-    sigFileName = inputFilesDir + "hzz250.root";
-  } else if (_signalName == "hzz300") {
-    sigFileName_train = inputFilesDir + "hzz300_train.root";
-    sigFileName_test = inputFilesDir + "hzz300_test.root";
-    sigFileName = inputFilesDir + "hzz300.root";
-  } else if (_signalName == "hzz350") {
-    sigFileName_train = inputFilesDir + "hzz350_train.root";
-    sigFileName_test = inputFilesDir + "hzz350_test.root";
-    sigFileName = inputFilesDir + "hzz350.root";
-  } else if (_signalName == "hzz400") {
-    sigFileName_train = inputFilesDir + "hzz400_train.root";
-    sigFileName_test = inputFilesDir + "hzz400_test.root";
-    sigFileName = inputFilesDir + "hzz400.root";
-    ////        signalWeight = 0.000284 * 1.1;
-  } else if (_signalName == "hzz450") {
-    sigFileName_train = inputFilesDir + "hzz450_train.root";
-    sigFileName_test = inputFilesDir + "hzz450_test.root";
-    sigFileName = inputFilesDir + "hzz450.root";
-  } else if (_signalName == "hzz500") {
-    sigFileName_train = inputFilesDir + "hzz500_train.root";
-    sigFileName_test = inputFilesDir + "hzz500_test.root";
-    sigFileName = inputFilesDir + "hzz500.root";
-  } else if (_signalName == "hzz550") {
-    sigFileName_train = inputFilesDir + "hzz550_train.root";
-    sigFileName_test = inputFilesDir + "hzz550_test.root";
-    sigFileName = inputFilesDir + "hzz550.root";
-  } else if (_signalName == "hzz600") {
-    sigFileName_train = inputFilesDir + "hzz600_train.root";
-    sigFileName_test = inputFilesDir + "hzz600_test.root";
-    sigFileName = inputFilesDir + "hzz600.root";
-
-  }// this for the case when the gg+VBF is used in the training
-
-  else if (_signalName == "hzz125_all") {
-    sigFileName_train = inputFilesDir + "hzz125_all_train.root";
-    sigFileName_test = inputFilesDir + "hzz125_all_test.root";
-    sigFileName = inputFilesDir + "hzz125_all.root";
-  } else if (_signalName == "hzz200_all") {
-    sigFileName_train = inputFilesDir + "hzz200_all_train.root";
-    sigFileName_test = inputFilesDir + "hzz200_all_test.root";
-    sigFileName = inputFilesDir + "hzz200_all.root";
-  } else if (_signalName == "hzz250_all") {
-    sigFileName_train = inputFilesDir + "hzz250_all_train.root";
-    sigFileName_test = inputFilesDir + "hzz250_all_test.root";
-    sigFileName = inputFilesDir + "hzz250_all.root";
-  } else if (_signalName == "hzz300_all") {
-    sigFileName_train = inputFilesDir + "hzz300_all_train.root";
-    sigFileName_test = inputFilesDir + "hzz300_all_test.root";
-    sigFileName = inputFilesDir + "hzz300_all.root";
-  } else if (_signalName == "hzz350_all") {
-    sigFileName_train = inputFilesDir + "hzz350_all_train.root";
-    sigFileName_test = inputFilesDir + "hzz350_all_test.root";
-    sigFileName = inputFilesDir + "hzz350_all.root";
-  } else if (_signalName == "hzz400_all") {
-    sigFileName_train = inputFilesDir + "hzz400_all_train.root";
-    sigFileName_test = inputFilesDir + "hzz400_all_test.root";
-    sigFileName = inputFilesDir + "hzz400_all.root";
-  } else if (_signalName == "hzz450_all") {
-    sigFileName_train = inputFilesDir + "hzz450_all_train.root";
-    sigFileName_test = inputFilesDir + "hzz450_all_test.root";
-    sigFileName = inputFilesDir + "hzz450_all.root";
-  } else if (_signalName == "hzz500_all") {
-    sigFileName_train = inputFilesDir + "hzz500_all_train.root";
-    sigFileName_test = inputFilesDir + "hzz500_all_test.root";
-    sigFileName = inputFilesDir + "hzz500_all.root";
-  } else if (_signalName == "hzz550_all") {
-    sigFileName_train = inputFilesDir + "hzz550_all_train.root";
-    sigFileName_test = inputFilesDir + "hzz550_all_test.root";
-    sigFileName = inputFilesDir + "hzz550_all.root";
-  } else if (_signalName == "hzz600_all") {
-    sigFileName_train = inputFilesDir + "hzz600_all_train.root";
-    sigFileName_test = inputFilesDir + "hzz600_all_test.root";
-    sigFileName = inputFilesDir + "hzz600_all.root";
-
   } else {
     std::cout << "\n\nUnknown signal sample \"" << _signalName << "\". Check Input!\n\n";
     return;
   }
 
 
-  // CUTS applied on top of the pre-selections in the input ntuples
-  // If there there is different MVA selector for different jet bins the 
-  // cuts should reflect the selections.
-
-  TString jetMultiName = "0j"; //used for inclusion in file names   
-  TCut addCutsSig = "nJets==0";
-  TCut addCutsBg = "nJets==0";
-
-  if (_jetMulti == 1) {
-    jetMultiName = "1j";
-    addCutsSig = "nJets==1";
-    addCutsBg = "nJets==1";
-  } else if (_jetMulti > 1) {
-    jetMultiName = "gt1j";
-    addCutsSig = "nJets>1";
-    addCutsBg = "nJets>1";
-  }
-
   //   used for the filenames of the MVA weights xml files, etc.
-  TString sampleNames = TString::Format("%s_%s_%s_", _bgName.Data(), _signalName.Data(), jetMultiName.Data());
+  TString sampleNames = TString::Format("%s_%s_", _bgName.Data(), _signalName.Data());
 
   // contains the performance histograms from the training
   // and the input variables
@@ -338,44 +218,12 @@ void TrainMva(TString myMethodList = "",
 
   // Define the input variables that shall be used for the MVA training
 
-  factory->AddVariable("lep1Pt", "p_{T}(l_{1})", "GeV", 'F');
-  factory->AddVariable("lep2Pt", "p_{T}(l_{2})", "GeV", 'F');
 
-  factory->AddVariable("diLepPt", "p_{T}(ll)", "GeV", 'F');
-  factory->AddVariable("diLepM", "m_{ll}", "GeV", 'F'); // do not use when using individual bg's that have real Z->ll
-  factory->AddVariable("diLepEta", "|#eta(ll)|", "", 'F');
-  factory->AddVariable("lepDeltaPhi", "#Delta#phi(l_{1},l_{2})", "rad", 'F');
-  factory->AddVariable("lepDeltaEta", "#Delta#eta(l_{1},l_{2})", "", 'F');
-  factory->AddVariable("lepDeltaR", "#Delta R(l_{1},l_{2})", "", 'F');
-  factory->AddVariable("lepAngle", "Open Angle(l_{1},l_{2})", "rad", 'F');
-  factory->AddVariable("lepPtRatio", "p_{T}_{l_{2}}/p_{T}_{l_{1}}", "", 'F');
-  factory->AddVariable("met", "MET", "GeV", 'F');
-  factory->AddVariable("metOverQt", "MET/p_{T}(ll)", "", 'F');
-  factory->AddVariable("metProjOnQt", "MET || p_{T}(ll)", "GeV", 'F');
-  factory->AddVariable("metPerpQt", "MET perp  p_{T}(ll)", "GeV", 'F');
-  factory->AddVariable("dPhiMetDiLep", "#Delta#phi(p_{ll},MET)", "rad", 'F');
-  factory->AddVariable("mt", "m_{T}(HZZ hypothesis)", "GeV", 'F');
-
-  factory->AddVariable("nJets15", "Number of jets with p_{T}>15", "", 'I');
-
-
-  //if (_jetMulti > 0) 
-  //       factory->AddVariable("dPhiJetMet", "#Delta#phi(Closest jet,MET)", "rad", 'F');
-  if (_jetMulti > 1) 
-  {
-    factory->AddVariable("deltaEtaDiJet", "#Delta#eta(jet1,jet2)", "rad", 'F');
-    factory->AddVariable("massDiJet", "M(jet1,jet2)", "GeV", 'F');
-    factory->AddVariable("zeppDiJetDiLep", "#eta* = #eta_{Z} - 0.5(#eta_{j_{1}} + #eta_{j_{2}})", "", 'F');
-  }
-
-
-  //    if (_bgName.EqualTo("TTBAR", TString::kIgnoreCase))
-  //if (_bgName == "ttbar" || _bgName.Contains("allBg", TString::kIgnoreCase))
-  //     factory->AddVariable("diLepM", "m_{ll}", "GeV", 'F'); // do not use when using individual bg's that have real Z->ll
-
-  // angle between MET and the jets
-  //    if (_jetMulti > 0) //  && _bgName.EqualTo("DYMM", TString::kIgnoreCase)) 
-  //        factory->AddVariable("dPhiJetMet", "#Delta#phi(jet,MET)", "rad", 'F');
+  factory->AddVariable("medisc","-log(Pb/(Ps+Pb))", "", 'F');
+  factory->AddVariable("smallTheta","cos(#theta)","",'F');
+  factory->AddVariable("bigTheta","cos(#Theta)","",'F');
+  factory->AddVariable("comPhi","#phi","rad",'F');
+  sampleChain->AddVariable("scaleFactor",&scaleFactor,"scaleFactor/F");
 
 
   if (!USE_SEPARATE_TRAIN_TEST_FILES) {
@@ -383,8 +231,8 @@ void TrainMva(TString myMethodList = "",
     TFile *bgFile = TFile::Open(bgFileName);
     std::cout << "--- TrainMva       : Using input files: " << sigFile->GetName() << " and  " << bgFile->GetName() << std::endl;
     // --- Register the training and test trees
-    TTree *signal = (TTree*) sigFile->Get("mvaTree");
-    TTree *background = (TTree*) bgFile->Get("mvaTree");
+    TTree *signal = (TTree*) sigFile->Get("varMVA");
+    TTree *background = (TTree*) bgFile->Get("varMVA");
 
     // You can add an arbitrary number of signal or background trees
     factory->AddSignalTree(signal, signalWeight);
@@ -399,10 +247,10 @@ void TrainMva(TString myMethodList = "",
       << sigFile_train->GetName() << " and  " << bgFile_train->GetName() << "\n"
       << sigFile_test->GetName() << " and  " << bgFile_test->GetName() << std::endl;
 
-    TTree *signal_train = (TTree*) sigFile_train->Get("mvaTree");
-    TTree *background_train = (TTree*) bgFile_train->Get("mvaTree");
-    TTree *signal_test = (TTree*) sigFile_test->Get("mvaTree");
-    TTree *background_test = (TTree*) bgFile_test->Get("mvaTree");
+    TTree *signal_train = (TTree*) sigFile_train->Get("varMVA");
+    TTree *background_train = (TTree*) bgFile_train->Get("varMVA");
+    TTree *signal_test = (TTree*) sigFile_test->Get("varMVA");
+    TTree *background_test = (TTree*) bgFile_test->Get("varMVA");
 
     factory->AddSignalTree(signal_train, signalWeight * 2, "Training");
     factory->AddBackgroundTree(background_train, backgroundWeight * 2, "Training");
