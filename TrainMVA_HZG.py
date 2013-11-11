@@ -1,21 +1,25 @@
 #!/usr/bin/env python
+import sys
+import os
+sys.argv.append('-b')
 
 import ROOT
 
 
-inputFilesDir = '../HiggsZGAnalyzer/mvaFiles/'
-outputWeightsDir = ''
-
-USE_SEPARATE_TRAIN_TEST_FILES = True
 # if selecting training and testing events from the same file
 # one has to enter specify the number of events
 
-def TrainMva(myMethodList = '', _signalName, _bgName, _numSignalTrain = 0, _numBgTrain = 0, _numSignalTest = 0, _numBgTest = 0, _weightsSubDir = ''):
+def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _numSignalTrain = 0, _numBgTrain = 0, _numSignalTest = 0, _numBgTest = 0, _weightsSubDir = 'testWeights'):
+  inputFilesDir = '../HiggsZGAnalyzer/mvaFiles/'
+  outputWeightsDir = ''
+
+  USE_SEPARATE_TRAIN_TEST_FILES = True
 
   print '==> Starting TrainMva '
   # subdirectory where output weights for classifiers will go
   outputWeightsDir += _weightsSubDir
-
+  if not os.path.isdir(outputWeightsDir):
+    os.mkdir(outputWeightsDir)
 
   # Common weights for the entire sample
   # use with event weights that do not account for x-section,
@@ -39,27 +43,19 @@ def TrainMva(myMethodList = '', _signalName, _bgName, _numSignalTrain = 0, _numB
 
   # CHECK THE FILENAMES BELOW AGAIN!!!
 
-  if (_bgName == 'zz'):
-    bgFileName_train = inputFilesDir + 'zz_train.root'
-    bgFileName_test = inputFilesDir + 'zz_test.root'
+  if (_bgName == 'allBG'):
+    bgFileName_train = inputFilesDir + 'higgsTraining_MuMu2012ABCD_11-11-13_bg.root'
+    bgFileName_test = inputFilesDir + 'higgsSample_MuMu2012ABCD_11-11-13_bg.root '
     bgFileName = inputFilesDir + 'zz.root' # when it is common.
-  elif (_bgName == 'ttbar'):
-    bgFileName_train = inputFilesDir + 'ttbar_train.root'
-    bgFileName_test = inputFilesDir + 'ttbar_test.root'
-    bgFileName = inputFilesDir + 'ttbar.root' # when it is common.
   else:
     print 'Unknown background',_bgName,'Check Input!'
     return
 
 
-  if (_signalName == 'hzz125'):
-    sigFileName_train = inputFilesDir + 'hzz125_train.root'
-    sigFileName_test = inputFilesDir + 'hzz125_test.root'
+  if (_signalName == 'ggM125'):
+    sigFileName_train = inputFilesDir + 'higgsTraining_MuMu2012ABCD_11-11-13_signal.root'
+    sigFileName_test = inputFilesDir + 'higgsSample_MuMu2012ABCD_11-11-13_signal.root'
     sigFileName = inputFilesDir + 'hzz125.root'
-  else if (_signalName == 'hzz200'):
-    sigFileName_train = inputFilesDir + 'hzz200_train.root'
-    sigFileName_test = inputFilesDir + 'hzz200_test.root'
-    sigFileName = inputFilesDir + 'hzz200.root'
   else:
     print 'Unknown signal',_signalName,'Check Input!'
     return
@@ -149,10 +145,10 @@ def TrainMva(myMethodList = '', _signalName, _bgName, _numSignalTrain = 0, _numB
   outputFile = ROOT.TFile.Open(outFileName, 'RECREATE')
   classificationBaseName = 'discr_' + sampleNames + '_'
 
-  factory = ROOT.TMVA.Factory(classificationBaseName, outputFile,
-      '!V:!Silent:Color:DrawProgressBar:Transformations=ID;P;G,D:AnalysisType=Classification');
+  #factory = ROOT.TMVA.Factory(classificationBaseName, outputFile, '!V:!Silent:Color:DrawProgressBar:Transformations=ID;P;G,D:AnalysisType=Classification');
+  factory = ROOT.TMVA.Factory(classificationBaseName, outputFile, '!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification');
 
-  (TMVA.gConfig().GetIONames()).fWeightFileDir = outputWeightsDir
+  (ROOT.TMVA.gConfig().GetIONames()).fWeightFileDir = outputWeightsDir
 
   # Define the input variables that shall be used for the MVA training
 
@@ -163,7 +159,7 @@ def TrainMva(myMethodList = '', _signalName, _bgName, _numSignalTrain = 0, _numB
   factory.AddVariable('comPhi','#phi','rad','F')
 
 
-  if (!USE_SEPARATE_TRAIN_TEST_FILES):
+  if not USE_SEPARATE_TRAIN_TEST_FILES:
     sigFile = ROOT.TFile.Open(sigFileName)
     bgFile = ROOT.TFile.Open(bgFileName)
     print '--- TrainMva       : Using input files:',sigFile.GetName(),'and',bgFile.GetName()
@@ -201,8 +197,8 @@ def TrainMva(myMethodList = '', _signalName, _bgName, _numSignalTrain = 0, _numB
   factory.SetSignalWeightExpression('scaleFactor')
   factory.SetBackgroundWeightExpression('scaleFactor')
 
-  if (!USE_SEPARATE_TRAIN_TEST_FILES):
-    factory.PrepareTrainingAndTestTree(addCutsSig, addCutsBg,
+  if not USE_SEPARATE_TRAIN_TEST_FILES:
+    factory.PrepareTrainingAndTestTree('', '',
         'nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:!V') # I used this one when reading train/test from same file
   else:
     # I prefer using separate files for training/testing, so this is just for completeness.
@@ -211,7 +207,8 @@ def TrainMva(myMethodList = '', _signalName, _bgName, _numSignalTrain = 0, _numB
     _numBgTrain = background_train.GetEntries()
     _numSignalTest = signal_test.GetEntries()
     _numBgTest = background_test.GetEntries()
-    factory.PrepareTrainingAndTestTree(addCutsSig,
+    myCut = ROOT.TCut('')
+    factory.PrepareTrainingAndTestTree(myCut,
         _numSignalTrain, _numBgTrain, _numSignalTest, _numBgTest,
         'SplitMode=Random:NormMode=NumEvents:!V')
 
@@ -431,13 +428,16 @@ def TrainMva(myMethodList = '', _signalName, _bgName, _numSignalTrain = 0, _numB
   # Save the output
   outputFile.Close()
 
-  std.cout << '==> Wrote root file: ' << outputFile.GetName() << std.endl
-  std.cout << '==> TrainMva is done!' << std.endl
+  print '==> Wrote root file:', outputFile.GetName()
+  print '==> TrainMva is done!'
 
   # Launch the GUI for the root macro
   # make it lightweight for batch jobs and skip loading this script . for interactive include
   # TMVAGui.C which is currently commented out.
   # if (!gROOT.IsBatch()) TMVAGui(outFileName)
+
+if __name__=="__main__":
+  TrainMva()
 
 
 
