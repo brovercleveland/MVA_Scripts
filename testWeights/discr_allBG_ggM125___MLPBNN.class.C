@@ -8,11 +8,11 @@
 
 Method         : MLP::MLPBNN
 TMVA Release   : 4.1.2         [262402]
-ROOT Release   : 5.32/00       [335872]
-Creator        : bpollack
-Date           : Mon Nov 11 10:31:57 2013
-Host           : Linux lxbuild168.cern.ch 2.6.18-308.16.1.el5 #1 SMP Thu Oct 4 14:02:28 CEST 2012 x86_64 x86_64 x86_64 GNU/Linux
-Dir            : /uscms_data/d2/bpollack/CMSSW_5_3_8_patch1/src/HZG_Analyzer/mva
+ROOT Release   : 5.32/04       [335876]
+Creator        : brianpollack
+Date           : Tue Nov 12 14:07:21 2013
+Host           : Darwin pb-d-128-141-108-211.cern.ch 11.4.2 Darwin Kernel Version 11.4.2: Thu Aug 23 16:25:48 PDT 2012; root:xnu-1699.32.7~1/RELEASE_X86_64 x86_64
+Dir            : /Users/brianpollack/HZG_Analyzer/mva
 Training events: 15120
 Analysis type  : [Classification]
 
@@ -224,62 +224,62 @@ inline void ReadMLPBNN::Initialize()
    fLayerSize[1] = 10; fWeights[1] = new double[10]; 
    fLayerSize[2] = 1; fWeights[2] = new double[1]; 
    // weight matrix from layer 0 to 1
-   fWeightMatrix0to1[0][0] = -2.35221690999614;
-   fWeightMatrix0to1[1][0] = 1.96354318605453;
-   fWeightMatrix0to1[2][0] = 1.09277266067256;
-   fWeightMatrix0to1[3][0] = 2.25224319857065;
-   fWeightMatrix0to1[4][0] = -2.10289075935643;
-   fWeightMatrix0to1[5][0] = -1.78178962799038;
-   fWeightMatrix0to1[6][0] = -0.902986067642546;
-   fWeightMatrix0to1[7][0] = -0.573689120462986;
-   fWeightMatrix0to1[8][0] = -3.12494103042886;
-   fWeightMatrix0to1[0][1] = -0.517418094554024;
-   fWeightMatrix0to1[1][1] = -0.433815764557606;
-   fWeightMatrix0to1[2][1] = 0.527892487755847;
-   fWeightMatrix0to1[3][1] = -0.142772065182278;
-   fWeightMatrix0to1[4][1] = -1.43534946609777;
-   fWeightMatrix0to1[5][1] = 0.101726793049377;
-   fWeightMatrix0to1[6][1] = -0.437997112813703;
-   fWeightMatrix0to1[7][1] = -0.155320012955653;
-   fWeightMatrix0to1[8][1] = 0.935914598143009;
-   fWeightMatrix0to1[0][2] = -0.152033949510984;
-   fWeightMatrix0to1[1][2] = 0.289021657054418;
-   fWeightMatrix0to1[2][2] = 0.217007484323673;
-   fWeightMatrix0to1[3][2] = -2.29383971649161;
-   fWeightMatrix0to1[4][2] = -0.40396849755369;
-   fWeightMatrix0to1[5][2] = 1.51573462315208;
-   fWeightMatrix0to1[6][2] = 0.00482637744447178;
-   fWeightMatrix0to1[7][2] = -0.342158386815592;
-   fWeightMatrix0to1[8][2] = -0.651734063902018;
-   fWeightMatrix0to1[0][3] = -0.0291865860775722;
-   fWeightMatrix0to1[1][3] = -0.00475922655340621;
-   fWeightMatrix0to1[2][3] = 0.0166163396204382;
-   fWeightMatrix0to1[3][3] = 0.0181490557601293;
-   fWeightMatrix0to1[4][3] = 0.0102267032975237;
-   fWeightMatrix0to1[5][3] = 0.00380260134728787;
-   fWeightMatrix0to1[6][3] = 0.00231722544281817;
-   fWeightMatrix0to1[7][3] = -0.00187309936353015;
-   fWeightMatrix0to1[8][3] = -0.0125196988027551;
-   fWeightMatrix0to1[0][4] = -1.84521002266831;
-   fWeightMatrix0to1[1][4] = 0.819933108538158;
-   fWeightMatrix0to1[2][4] = 0.0370565407382669;
-   fWeightMatrix0to1[3][4] = 0.443079247992145;
-   fWeightMatrix0to1[4][4] = 0.865668295233157;
-   fWeightMatrix0to1[5][4] = -0.206381033339385;
-   fWeightMatrix0to1[6][4] = 1.46208371893429;
-   fWeightMatrix0to1[7][4] = 0.460991710350117;
-   fWeightMatrix0to1[8][4] = -1.09268009161692;
+   fWeightMatrix0to1[0][0] = -2.3437744456418;
+   fWeightMatrix0to1[1][0] = 1.81830489217549;
+   fWeightMatrix0to1[2][0] = 1.08624697214402;
+   fWeightMatrix0to1[3][0] = 2.36435286538588;
+   fWeightMatrix0to1[4][0] = -2.38007032928705;
+   fWeightMatrix0to1[5][0] = -1.93904047631976;
+   fWeightMatrix0to1[6][0] = -0.975354855835342;
+   fWeightMatrix0to1[7][0] = -0.530466470764228;
+   fWeightMatrix0to1[8][0] = -3.00280443690378;
+   fWeightMatrix0to1[0][1] = -0.532147708049771;
+   fWeightMatrix0to1[1][1] = -0.369302892234537;
+   fWeightMatrix0to1[2][1] = 0.418757624438808;
+   fWeightMatrix0to1[3][1] = -0.138403303737028;
+   fWeightMatrix0to1[4][1] = -1.48760073311342;
+   fWeightMatrix0to1[5][1] = 0.0853932547601343;
+   fWeightMatrix0to1[6][1] = -0.473044449996699;
+   fWeightMatrix0to1[7][1] = -0.220937094182919;
+   fWeightMatrix0to1[8][1] = 0.90444701752411;
+   fWeightMatrix0to1[0][2] = -0.149447857439513;
+   fWeightMatrix0to1[1][2] = 0.277589525819373;
+   fWeightMatrix0to1[2][2] = 0.252085197211153;
+   fWeightMatrix0to1[3][2] = -2.55965615358994;
+   fWeightMatrix0to1[4][2] = -0.442667587909844;
+   fWeightMatrix0to1[5][2] = 1.78222528809798;
+   fWeightMatrix0to1[6][2] = 0.0178876714504313;
+   fWeightMatrix0to1[7][2] = -0.309932378779015;
+   fWeightMatrix0to1[8][2] = -0.643453992165667;
+   fWeightMatrix0to1[0][3] = -0.031053715963981;
+   fWeightMatrix0to1[1][3] = 0.00152325236536216;
+   fWeightMatrix0to1[2][3] = 0.0169488867502874;
+   fWeightMatrix0to1[3][3] = 0.0208077666152923;
+   fWeightMatrix0to1[4][3] = 0.0142541168024503;
+   fWeightMatrix0to1[5][3] = 0.00460927615444612;
+   fWeightMatrix0to1[6][3] = 0.00617569821795617;
+   fWeightMatrix0to1[7][3] = -0.00508653143158991;
+   fWeightMatrix0to1[8][3] = -0.0268352831824882;
+   fWeightMatrix0to1[0][4] = -1.83885419363099;
+   fWeightMatrix0to1[1][4] = 0.836104750269206;
+   fWeightMatrix0to1[2][4] = -0.0658883301812569;
+   fWeightMatrix0to1[3][4] = 0.337228383758221;
+   fWeightMatrix0to1[4][4] = 0.929976801527424;
+   fWeightMatrix0to1[5][4] = -0.148606304465727;
+   fWeightMatrix0to1[6][4] = 1.35860246745133;
+   fWeightMatrix0to1[7][4] = 0.68696903268263;
+   fWeightMatrix0to1[8][4] = -1.07929751960535;
    // weight matrix from layer 1 to 2
-   fWeightMatrix1to2[0][0] = -0.832023995357285;
-   fWeightMatrix1to2[0][1] = 1.06316557821722;
-   fWeightMatrix1to2[0][2] = -1.042730084103;
-   fWeightMatrix1to2[0][3] = 0.828869616070786;
-   fWeightMatrix1to2[0][4] = -0.742090198326991;
-   fWeightMatrix1to2[0][5] = 1.30857969135637;
-   fWeightMatrix1to2[0][6] = 0.426218705319243;
-   fWeightMatrix1to2[0][7] = 0.615722840217354;
-   fWeightMatrix1to2[0][8] = 0.657177237081356;
-   fWeightMatrix1to2[0][9] = -0.783427359245652;
+   fWeightMatrix1to2[0][0] = -0.751686340904503;
+   fWeightMatrix1to2[0][1] = 1.05474205652106;
+   fWeightMatrix1to2[0][2] = -1.22128481180346;
+   fWeightMatrix1to2[0][3] = 0.858738983845068;
+   fWeightMatrix1to2[0][4] = -0.754171256241688;
+   fWeightMatrix1to2[0][5] = 1.27020881359656;
+   fWeightMatrix1to2[0][6] = 0.403108039965801;
+   fWeightMatrix1to2[0][7] = 0.498105365567642;
+   fWeightMatrix1to2[0][8] = 0.582127779074439;
+   fWeightMatrix1to2[0][9] = -0.864569533106264;
 }
 
 inline double ReadMLPBNN::GetMvaValue__( const std::vector<double>& inputValues ) const

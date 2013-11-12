@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import sys
 import os
-doGui = False
+doGui = True
 if not doGui: sys.argv.append('-b')
 
 import ROOT
@@ -120,7 +120,7 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _numS
   # --- Neural Networks (all are feed-forward Multilayer Perceptrons)
   Use['MLP'] = 0 # Recommended ANN
   Use['MLPBFGS'] = 0 # Recommended ANN with optional training method
-  Use['MLPBNN'] = 0 # Recommended ANN with BFGS training method and bayesian regulator
+  Use['MLPBNN'] = 1 # Recommended ANN with BFGS training method and bayesian regulator
   Use['CFMlpANN'] = 0 # Depreciated ANN from ALEPH
   Use['TMlpANN'] = 0 # ROOT's own ANN
   #
@@ -129,7 +129,7 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _numS
   #
   # --- Boosted Decision Trees
   Use['BDT'] = 1 # uses Adaptive Boost
-  Use['BDTG'] = 0 # uses Gradient Boost
+  Use['BDTG'] = 1 # uses Gradient Boost
   Use['BDTB'] = 0 # uses Bagging
   Use['BDTD'] = 0 # decorrelation + Adaptive Boost
   Use['BDTF'] = 0 # allow usage of fisher discriminant for node splitting
