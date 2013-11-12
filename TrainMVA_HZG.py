@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import sys
 import os
-doGui = True
+doGui = False
 if not doGui: sys.argv.append('-b')
 
 import ROOT

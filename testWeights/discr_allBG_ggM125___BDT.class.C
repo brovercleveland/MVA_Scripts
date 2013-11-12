@@ -8,11 +8,11 @@
 
 Method         : BDT::BDT
 TMVA Release   : 4.1.2         [262402]
-ROOT Release   : 5.32/04       [335876]
-Creator        : brianpollack
-Date           : Tue Nov 12 10:45:35 2013
-Host           : Darwin pb-d-128-141-108-211.cern.ch 11.4.2 Darwin Kernel Version 11.4.2: Thu Aug 23 16:25:48 PDT 2012; root:xnu-1699.32.7~1/RELEASE_X86_64 x86_64
-Dir            : /Users/brianpollack/HZG_Analyzer/mva
+ROOT Release   : 5.32/00       [335872]
+Creator        : bpollack
+Date           : Tue Nov 12 06:39:14 2013
+Host           : Linux lxbuild168.cern.ch 2.6.18-308.16.1.el5 #1 SMP Thu Oct 4 14:02:28 CEST 2012 x86_64 x86_64 x86_64 GNU/Linux
+Dir            : /uscms_data/d2/bpollack/CMSSW_5_3_8_patch1/src/HZG_Analyzer/mva
 Training events: 15120
 Analysis type  : [Classification]
 
