@@ -2,13 +2,13 @@
 <MethodSetup Method="BDT::BDT">
   <GeneralInfo>
     <Info name="TMVA Release" value="4.1.2 [262402]"/>
-    <Info name="ROOT Release" value="5.32/00 [335872]"/>
-    <Info name="Creator" value="bpollack"/>
-    <Info name="Date" value="Mon Nov 11 10:32:02 2013"/>
-    <Info name="Host" value="Linux lxbuild168.cern.ch 2.6.18-308.16.1.el5 #1 SMP Thu Oct 4 14:02:28 CEST 2012 x86_64 x86_64 x86_64 GNU/Linux"/>
-    <Info name="Dir" value="/uscms_data/d2/bpollack/CMSSW_5_3_8_patch1/src/HZG_Analyzer/mva"/>
+    <Info name="ROOT Release" value="5.32/04 [335876]"/>
+    <Info name="Creator" value="brianpollack"/>
+    <Info name="Date" value="Tue Nov 12 10:45:35 2013"/>
+    <Info name="Host" value="Darwin pb-d-128-141-108-211.cern.ch 11.4.2 Darwin Kernel Version 11.4.2: Thu Aug 23 16:25:48 PDT 2012; root:xnu-1699.32.7~1/RELEASE_X86_64 x86_64"/>
+    <Info name="Dir" value="/Users/brianpollack/HZG_Analyzer/mva"/>
     <Info name="Training events" value="15120"/>
-    <Info name="TrainingTime" value="3.85175896e+00"/>
+    <Info name="TrainingTime" value="4.50599384e+00"/>
     <Info name="AnalysisType" value="Classification"/>
   </GeneralInfo>
   <Options>

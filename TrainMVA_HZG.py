@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import sys
 import os
-sys.argv.append('-b')
+doGui = True
+if not doGui: sys.argv.append('-b')
 
 import ROOT
 
@@ -10,6 +11,7 @@ import ROOT
 # one has to enter specify the number of events
 
 def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _numSignalTrain = 0, _numBgTrain = 0, _numSignalTest = 0, _numBgTest = 0, _weightsSubDir = 'testWeights'):
+  ROOT.gROOT.ProcessLine('.L '+os.getenv('ROOTSYS')+'/tmva/test/TMVAGui.C')
   inputFilesDir = '../HiggsZGAnalyzer/mvaFiles/'
   outputWeightsDir = ''
 
@@ -118,7 +120,7 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _numS
   # --- Neural Networks (all are feed-forward Multilayer Perceptrons)
   Use['MLP'] = 0 # Recommended ANN
   Use['MLPBFGS'] = 0 # Recommended ANN with optional training method
-  Use['MLPBNN'] = 1 # Recommended ANN with BFGS training method and bayesian regulator
+  Use['MLPBNN'] = 0 # Recommended ANN with BFGS training method and bayesian regulator
   Use['CFMlpANN'] = 0 # Depreciated ANN from ALEPH
   Use['TMlpANN'] = 0 # ROOT's own ANN
   #
@@ -434,7 +436,9 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _numS
   # Launch the GUI for the root macro
   # make it lightweight for batch jobs and skip loading this script . for interactive include
   # TMVAGui.C which is currently commented out.
-  # if (!gROOT.IsBatch()) TMVAGui(outFileName)
+  if doGui:
+    ROOT.TMVAGui(outFileName)
+    ROOT.gApplication.Run()
 
 if __name__=="__main__":
   TrainMva()
