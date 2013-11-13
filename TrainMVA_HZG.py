@@ -5,7 +5,7 @@ doGui = True
 if not doGui: sys.argv.append('-b')
 
 import ROOT
-sampleSuffix = '_comAngles'
+sampleSuffix = '_comAndPts'
 
 
 # if selecting training and testing events from the same file
@@ -47,8 +47,8 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _numS
   # CHECK THE FILENAMES BELOW AGAIN!!!
 
   if (_bgName == 'allBG'):
-    bgFileName_train = inputFilesDir + 'higgsTraining_MuMu2012ABCD_11-11-13_bg.root'
-    bgFileName_test = inputFilesDir + 'higgsSample_MuMu2012ABCD_11-11-13_bg.root '
+    bgFileName_train = inputFilesDir + 'higgsTraining_MuMu2012ABCD_11-13-13_bg.root'
+    bgFileName_test = inputFilesDir + 'higgsSample_MuMu2012ABCD_11-13-13_bg.root '
     bgFileName = inputFilesDir + 'zz.root' # when it is common.
   else:
     print 'Unknown background',_bgName,'Check Input!'
@@ -56,8 +56,8 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _numS
 
 
   if (_signalName == 'ggM125'):
-    sigFileName_train = inputFilesDir + 'higgsTraining_MuMu2012ABCD_11-11-13_signal.root'
-    sigFileName_test = inputFilesDir + 'higgsSample_MuMu2012ABCD_11-11-13_signal.root'
+    sigFileName_train = inputFilesDir + 'higgsTraining_MuMu2012ABCD_11-13-13_signal.root'
+    sigFileName_test = inputFilesDir + 'higgsSample_MuMu2012ABCD_11-13-13_signal.root'
     sigFileName = inputFilesDir + 'hzz125.root'
   else:
     print 'Unknown signal',_signalName,'Check Input!'
@@ -160,6 +160,10 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _numS
   factory.AddVariable('smallTheta','cos(#theta)','','F')
   factory.AddVariable('bigTheta','cos(#Theta)','','F')
   factory.AddVariable('comPhi','#phi','rad','F')
+  factory.AddVariable('GPtOM','#pT_{#gamma}/m_{ll#gamma}','','F')
+  factory.AddVariable('diffZGvectorOM','(#pT_{#gamma}-pT_{ll})/m_{ll#gamma}','','F')
+  factory.AddVariable('threeBodyPtOM','#pT_{ll#gamma}/m_{ll#gamma}','','F')
+  factory.AddVariable('ZPtOM','#pT_{ll}/m_{ll#gamma}','','F')
 
 
   if not USE_SEPARATE_TRAIN_TEST_FILES:
