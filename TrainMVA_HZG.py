@@ -5,6 +5,7 @@ doGui = True
 if not doGui: sys.argv.append('-b')
 
 import ROOT
+sampleSuffix = '_comAngles'
 
 
 # if selecting training and testing events from the same file
@@ -63,7 +64,7 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _numS
     return
 
   #   used for the filenames of the MVA weights xml files, etc.
-  sampleNames =  _bgName+'_'+_signalName+'_'
+  sampleNames =  _bgName+'_'+_signalName+sampleSuffix+'_'
 
   # contains the performance histograms from the training
   # and the input variables
@@ -155,7 +156,7 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _numS
   # Define the input variables that shall be used for the MVA training
 
 
-  factory.AddVariable('medisc','-log(Pb/(Ps+Pb))', '', 'F')
+  #factory.AddVariable('medisc','-log(Pb/(Ps+Pb))', '', 'F')
   factory.AddVariable('smallTheta','cos(#theta)','','F')
   factory.AddVariable('bigTheta','cos(#Theta)','','F')
   factory.AddVariable('comPhi','#phi','rad','F')
