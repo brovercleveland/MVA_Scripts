@@ -5,7 +5,7 @@ doGui = True
 if not doGui: sys.argv.append('-b')
 
 import ROOT
-sampleSuffix = '_comAndPts'
+sampleSuffix = '_anglesOnly'
 
 
 # if selecting training and testing events from the same file
@@ -47,8 +47,8 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _numS
   # CHECK THE FILENAMES BELOW AGAIN!!!
 
   if (_bgName == 'allBG'):
-    bgFileName_train = inputFilesDir + 'higgsTraining_MuMu2012ABCD_11-13-13_bg.root'
-    bgFileName_test = inputFilesDir + 'higgsSample_MuMu2012ABCD_11-13-13_bg.root '
+    bgFileName_train = inputFilesDir + 'higgsTraining_MuMu2012ABCD_11-18-13_bg.root'
+    bgFileName_test = inputFilesDir + 'higgsSample_MuMu2012ABCD_11-18-13_bg.root '
     bgFileName = inputFilesDir + 'zz.root' # when it is common.
   else:
     print 'Unknown background',_bgName,'Check Input!'
@@ -56,8 +56,8 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _numS
 
 
   if (_signalName == 'ggM125'):
-    sigFileName_train = inputFilesDir + 'higgsTraining_MuMu2012ABCD_11-13-13_signal.root'
-    sigFileName_test = inputFilesDir + 'higgsSample_MuMu2012ABCD_11-13-13_signal.root'
+    sigFileName_train = inputFilesDir + 'higgsTraining_MuMu2012ABCD_11-18-13_signal.root'
+    sigFileName_test = inputFilesDir + 'higgsSample_MuMu2012ABCD_11-18-13_signal.root'
     sigFileName = inputFilesDir + 'hzz125.root'
   else:
     print 'Unknown signal',_signalName,'Check Input!'
@@ -121,7 +121,7 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _numS
   # --- Neural Networks (all are feed-forward Multilayer Perceptrons)
   Use['MLP'] = 0 # Recommended ANN
   Use['MLPBFGS'] = 0 # Recommended ANN with optional training method
-  Use['MLPBNN'] = 1 # Recommended ANN with BFGS training method and bayesian regulator
+  Use['MLPBNN'] = 0 # Recommended ANN with BFGS training method and bayesian regulator
   Use['CFMlpANN'] = 0 # Depreciated ANN from ALEPH
   Use['TMlpANN'] = 0 # ROOT's own ANN
   #
@@ -160,10 +160,16 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _numS
   factory.AddVariable('smallTheta','cos(#theta)','','F')
   factory.AddVariable('bigTheta','cos(#Theta)','','F')
   factory.AddVariable('comPhi','#phi','rad','F')
-  factory.AddVariable('GPtOM','#pT_{#gamma}/m_{ll#gamma}','','F')
-  factory.AddVariable('diffZGvectorOM','(#pT_{#gamma}-pT_{ll})/m_{ll#gamma}','','F')
-  factory.AddVariable('threeBodyPtOM','#pT_{ll#gamma}/m_{ll#gamma}','','F')
-  factory.AddVariable('ZPtOM','#pT_{ll}/m_{ll#gamma}','','F')
+  #factory.AddVariable('GPtOM','pT_{#gamma}/m_{ll#gamma}','','F')
+  #factory.AddVariable('diffZGvectorOM','(pT_{#gamma}-pT_{ll})/m_{ll#gamma}','','F')
+  #factory.AddVariable('threeBodyPtOM','pT_{ll#gamma}/m_{ll#gamma}','','F')
+  #factory.AddVariable('ZPtOM','pT_{ll}/m_{ll#gamma}','','F')
+  factory.AddVariable('GEta','#eta_{#gamma}','','F')
+  factory.AddVariable('ZEta','#eta_{ll}','','F')
+  factory.AddVariable('threeBodyEta','#eta_{ll#gamma}','','F')
+  #factory.AddVariable('GPtOHPt','pT_{#gamma}/pT_{ll#gamma}','','F')
+
+  factory.AddSpectator('threeBodyMass','m_{ll#gamma}','GeV')
 
 
   if not USE_SEPARATE_TRAIN_TEST_FILES:
