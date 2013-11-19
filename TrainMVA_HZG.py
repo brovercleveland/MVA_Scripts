@@ -11,7 +11,7 @@ sampleSuffix = '_anglesOnly'
 # if selecting training and testing events from the same file
 # one has to enter specify the number of events
 
-def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _numSignalTrain = 0, _numBgTrain = 0, _numSignalTest = 0, _numBgTest = 0, _weightsSubDir = 'testWeights'):
+def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _selection = 'mumuGamma', _numSignalTrain = 0, _numBgTrain = 0, _numSignalTest = 0, _numBgTest = 0, _weightsSubDir = 'testWeights'):
   ROOT.gROOT.ProcessLine('.L '+os.getenv('ROOTSYS')+'/tmva/test/TMVAGui.C')
   inputFilesDir = '../HiggsZGAnalyzer/mvaFiles/'
   outputWeightsDir = ''
@@ -46,9 +46,14 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _numS
 
   # CHECK THE FILENAMES BELOW AGAIN!!!
 
+  fileSel = ''
+  if _selection == 'mumuGamma':
+    fileSel = 'MuMu'
+  elif _selection == 'eeGamma':
+    fileSel = 'EE'
   if (_bgName == 'allBG'):
-    bgFileName_train = inputFilesDir + 'higgsTraining_MuMu2012ABCD_11-18-13_bg.root'
-    bgFileName_test = inputFilesDir + 'higgsSample_MuMu2012ABCD_11-18-13_bg.root '
+    bgFileName_train = inputFilesDir + 'higgsTraining_'+fileSel+'2012ABCD_11-18-13_bg.root'
+    bgFileName_test = inputFilesDir + 'higgsSample_'+fileSel+'2012ABCD_11-18-13_bg.root '
     bgFileName = inputFilesDir + 'zz.root' # when it is common.
   else:
     print 'Unknown background',_bgName,'Check Input!'
@@ -56,15 +61,15 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _numS
 
 
   if (_signalName == 'ggM125'):
-    sigFileName_train = inputFilesDir + 'higgsTraining_MuMu2012ABCD_11-18-13_signal.root'
-    sigFileName_test = inputFilesDir + 'higgsSample_MuMu2012ABCD_11-18-13_signal.root'
+    sigFileName_train = inputFilesDir + 'higgsTraining_'+fileSel+'2012ABCD_11-18-13_signal.root'
+    sigFileName_test = inputFilesDir + 'higgsSample_'+fileSel+'2012ABCD_11-18-13_signal.root'
     sigFileName = inputFilesDir + 'hzz125.root'
   else:
     print 'Unknown signal',_signalName,'Check Input!'
     return
 
   #   used for the filenames of the MVA weights xml files, etc.
-  sampleNames =  _bgName+'_'+_signalName+sampleSuffix+'_'
+  sampleNames =  _selection+'_'+_bgName+'_'+_signalName+sampleSuffix+'_'
 
   # contains the performance histograms from the training
   # and the input variables
