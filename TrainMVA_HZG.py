@@ -52,8 +52,8 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _sele
   elif _selection == 'eeGamma':
     fileSel = 'EE'
   if (_bgName == 'allBG'):
-    bgFileName_train = inputFilesDir + 'higgsTraining_'+fileSel+'2012ABCD_11-18-13_bg.root'
-    bgFileName_test = inputFilesDir + 'higgsSample_'+fileSel+'2012ABCD_11-18-13_bg.root '
+    bgFileName_train = inputFilesDir + 'higgsTraining_'+fileSel+'2012ABCD_11-18-13_anglesOnly_bg.root'
+    bgFileName_test = inputFilesDir + 'higgsSample_'+fileSel+'2012ABCD_11-18-13_anglesOnly_bg.root '
     bgFileName = inputFilesDir + 'zz.root' # when it is common.
   else:
     print 'Unknown background',_bgName,'Check Input!'
@@ -61,8 +61,8 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _sele
 
 
   if (_signalName == 'ggM125'):
-    sigFileName_train = inputFilesDir + 'higgsTraining_'+fileSel+'2012ABCD_11-18-13_signal.root'
-    sigFileName_test = inputFilesDir + 'higgsSample_'+fileSel+'2012ABCD_11-18-13_signal.root'
+    sigFileName_train = inputFilesDir + 'higgsTraining_'+fileSel+'2012ABCD_11-18-13_anglesOnly_signal.root'
+    sigFileName_test = inputFilesDir + 'higgsSample_'+fileSel+'2012ABCD_11-18-13_anglesOnly_signal.root'
     sigFileName = inputFilesDir + 'hzz125.root'
   else:
     print 'Unknown signal',_signalName,'Check Input!'
@@ -457,7 +457,7 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _sele
     ROOT.gApplication.Run()
 
 if __name__=="__main__":
-  TrainMva()
+  TrainMva(_selection='eeGamma')
 
 
 
