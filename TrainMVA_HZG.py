@@ -5,7 +5,7 @@ doGui = True
 if not doGui: sys.argv.append('-b')
 
 import ROOT
-sampleSuffix = '_anglesOnly'
+sampleSuffix = '_newAnglesR9'
 
 
 # if selecting training and testing events from the same file
@@ -52,8 +52,8 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _sele
   elif _selection == 'eeGamma':
     fileSel = 'EE'
   if (_bgName == 'allBG'):
-    bgFileName_train = inputFilesDir + 'higgsTraining_'+fileSel+'2012ABCD_11-18-13_anglesOnly_bg.root'
-    bgFileName_test = inputFilesDir + 'higgsSample_'+fileSel+'2012ABCD_11-18-13_anglesOnly_bg.root '
+    bgFileName_train = inputFilesDir + 'higgsTraining_'+fileSel+'2012ABCD_12-4-13_newAnglesR9_bg.root'
+    bgFileName_test = inputFilesDir + 'higgsSample_'+fileSel+'2012ABCD_12-4-13_newAnglesR9_bg.root '
     bgFileName = inputFilesDir + 'zz.root' # when it is common.
   else:
     print 'Unknown background',_bgName,'Check Input!'
@@ -61,8 +61,8 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _sele
 
 
   if (_signalName == 'ggM125'):
-    sigFileName_train = inputFilesDir + 'higgsTraining_'+fileSel+'2012ABCD_11-18-13_anglesOnly_signal.root'
-    sigFileName_test = inputFilesDir + 'higgsSample_'+fileSel+'2012ABCD_11-18-13_anglesOnly_signal.root'
+    sigFileName_train = inputFilesDir + 'higgsTraining_'+fileSel+'2012ABCD_12-4-13_newAnglesR9_signal.root'
+    sigFileName_test = inputFilesDir + 'higgsSample_'+fileSel+'2012ABCD_12-4-13_newAnglesR9_signal.root'
     sigFileName = inputFilesDir + 'hzz125.root'
   else:
     print 'Unknown signal',_signalName,'Check Input!'
@@ -134,7 +134,7 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _sele
   Use['SVM'] = 0
   #
   # --- Boosted Decision Trees
-  Use['BDT'] = 1 # uses Adaptive Boost
+  Use['BDT'] = 0 # uses Adaptive Boost
   Use['BDTG'] = 1 # uses Gradient Boost
   Use['BDTB'] = 0 # uses Bagging
   Use['BDTD'] = 0 # decorrelation + Adaptive Boost
@@ -167,11 +167,14 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _sele
   factory.AddVariable('comPhi','#phi','rad','F')
   #factory.AddVariable('GPtOM','pT_{#gamma}/m_{ll#gamma}','','F')
   #factory.AddVariable('diffZGvectorOM','(pT_{#gamma}-pT_{ll})/m_{ll#gamma}','','F')
-  #factory.AddVariable('threeBodyPtOM','pT_{ll#gamma}/m_{ll#gamma}','','F')
+  factory.AddVariable('threeBodyPtOM','pT_{ll#gamma}/m_{ll#gamma}','','F')
   #factory.AddVariable('ZPtOM','pT_{ll}/m_{ll#gamma}','','F')
   factory.AddVariable('GEta','#eta_{#gamma}','','F')
-  factory.AddVariable('ZEta','#eta_{ll}','','F')
-  factory.AddVariable('threeBodyEta','#eta_{ll#gamma}','','F')
+  factory.AddVariable('l1Eta','#eta_{l1}','','F')
+  factory.AddVariable('l2Eta','#eta_{l2}','','F')
+  factory.AddVariable('R9var','R9','','F')
+  #factory.AddVariable('ZEta','#eta_{ll}','','F')
+  #factory.AddVariable('threeBodyEta','#eta_{ll#gamma}','','F')
   #factory.AddVariable('GPtOHPt','pT_{#gamma}/pT_{ll#gamma}','','F')
 
   factory.AddSpectator('threeBodyMass','m_{ll#gamma}','GeV')
@@ -394,7 +397,10 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _sele
   # here is a version with modified parameters
   if (Use['BDTG']): # Gradient Boost
     factory.BookMethod(ROOT.TMVA.Types.kBDT, 'BDTG',
-        '!H:!V:NTrees=1000:BoostType=Grad:Shrinkage=0.10:UseBaggedGrad:GradBaggingFraction=0.5:nCuts=20:NNodesMax=8:nEventsMin=12')
+        #'!H:!V:NTrees=1000:BoostType=Grad:Shrinkage=0.10:UseBaggedGrad:GradBaggingFraction=0.5:nCuts=20:NNodesMax=8:nEventsMin=30')
+        '!H:!V:NTrees=1000:BoostType=Grad:Shrinkage=0.10:UseBaggedGrad:GradBaggingFraction=0.5:nCuts=2000:NNodesMax=8:IgnoreNegWeights:nEventsMin=80')
+        #'!H:V:NTrees=2000:BoostType=Grad:Shrinkage=0.05:nCuts=20:NNodesMax=10:UseBaggedGrad:GradBaggingFraction=0.50:IgnoreNegWeights')
+    factory.PrintHelpMessage("BDTG")
 
 
   if (Use['BDT']): # Adaptive Boost
@@ -458,6 +464,7 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _sele
 
 if __name__=="__main__":
   TrainMva(_selection='eeGamma')
+  #TrainMva()
 
 
 
