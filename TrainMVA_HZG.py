@@ -1,35 +1,38 @@
 #!/usr/bin/env python
 import sys
 import os
+import shutil
 import atexit
 doGui = True
 if not doGui: sys.argv.append('-b')
 
 import ROOT
-sampleSuffix = '_05-07-14_PhoMVA'
 
 
 # if selecting training and testing events from the same file
 # one has to enter specify the number of events
 
-def TrainMva(varList, varDict, myMethodList = '', _signalName = 'ggM123', _bgName = 'allBG', _selection = 'mumuGamma', _numSignalTrain = 0, _numBgTrain = 0, _numSignalTest = 0, _numBgTest = 0, _weightsSubDir = 'testWeights'):
+def TrainMva(varList, varDict, sampleSuffix, myMethodList = '', _signalName = 'ggM123', _bgName = 'allBG', _selection = 'mumuGamma', _numSignalTrain = 0, _numBgTrain = 0, _numSignalTest = 0, _numBgTest = 0):
+
+
   ROOT.gROOT.ProcessLine('.L '+os.getenv('ROOTSYS')+'/tmva/test/TMVAGui.C')
   inputFilesDir = '../HiggsZGAnalyzer/mvaFiles/'
-  outputWeightsDir = ''
 
   USE_SEPARATE_TRAIN_TEST_FILES = True
 
   print '==> Starting TrainMva '
-  # subdirectory where output weights for classifiers will go
-  outputWeightsDir += _weightsSubDir
-  if not os.path.isdir(outputWeightsDir):
-    os.mkdir(outputWeightsDir)
+  # subdirectory where output weights and plots for classifiers will go
+
+  headDir = '_'.join([sampleSuffix,_bgName,_signalName])
+  outputDir = '/'.join([headDir,_selection,'_'.join(varList)])
+  outputWeightsDir = outputDir + '/weights'
+  if not os.path.exists(outputWeightsDir):
+    os.makedirs(outputWeightsDir)
 
   # Common weights for the entire sample
   # use with event weights that do not account for x-section,
   # or with fullWeight to avoid too small weights due to small sample scale factors (if such issues occur)
-  signalWeight = 0.000587865168096
-  #signalWeight = 1.0
+  signalWeight = 1.0
   backgroundWeight = 1.0
 
   sigFileName_train = ''
@@ -54,28 +57,24 @@ def TrainMva(varList, varDict, myMethodList = '', _signalName = 'ggM123', _bgNam
   elif _selection == 'eeGamma':
     fileSel = 'EE'
   if (_bgName == 'allBG'):
-    bgFileName_train = inputFilesDir + 'higgsTraining_'+fileSel+'2012ABCD'+sampleSuffix+'_bg.root'
-    bgFileName_test = inputFilesDir + 'higgsSample_'+fileSel+'2012ABCD'+sampleSuffix+'_bg.root '
+    bgFileName_train = inputFilesDir + '_'.join(['higgsTraining',fileSel+'2012ABCD',sampleSuffix,'bg.root'])
+    bgFileName_test = inputFilesDir + '_'.join(['higgsSample',fileSel+'2012ABCD',sampleSuffix,'bg.root'])
     bgFileName = inputFilesDir + 'zz.root' # when it is common.
   else:
     print 'Unknown background',_bgName,'Check Input!'
     return
 
 
-  if (_signalName == 'ggM123'):
-    sigFileName_train = inputFilesDir + 'higgsTraining_'+fileSel+'2012ABCD'+sampleSuffix+'_signal.root'
-    sigFileName_test = inputFilesDir + 'higgsSample_'+fileSel+'2012ABCD'+sampleSuffix+'_signal.root'
-    sigFileName = inputFilesDir + 'hzz125.root'
-  else:
-    print 'Unknown signal',_signalName,'Check Input!'
-    return
+  sigFileName_train = inputFilesDir + '_'.join(['higgsTraining',fileSel+'2012ABCD',sampleSuffix,'signal.root'])
+  sigFileName_test = inputFilesDir + '_'.join(['higgsSample',fileSel+'2012ABCD',sampleSuffix,'signal.root'])
+  sigFileName = inputFilesDir + 'hzz125.root'
 
   #   used for the filenames of the MVA weights xml files, etc.
-  sampleNames =  _selection+'_'+_bgName+'_'+_signalName+sampleSuffix+'_'
+  sampleNames =  '_'.join([_selection,_bgName,_signalName,sampleSuffix])
 
   # contains the performance histograms from the training
   # and the input variables
-  outFileName = sampleNames + 'TMVA.root'
+  outFileName = outputDir+'/'+sampleNames + '_TMVA.root'
 
   #-----------------------------------------------------------
 
@@ -448,13 +447,20 @@ def TrainMva(varList, varDict, myMethodList = '', _signalName = 'ggM123', _bgNam
   # make it lightweight for batch jobs and skip loading this script . for interactive include
   # TMVAGui.C which is currently commented out.
 
+  atexit.register(goodbye,outputDir)
   if doGui:
-    atexit.register(goodbye, sampleNames.rstrip('_'))
     ROOT.TMVAGui(outFileName)
     ROOT.gApplication.Run()
 
-def goodbye(plotsname):
-  os.rename('plots','plots_{0}'.format(plotsname))
+def goodbye(path):
+  if os.path.exists('plots'):
+    if not os.path.exists(path+'/plots'):
+      shutil.move('plots',path+'/plots')
+    else:
+      for plot in os.listdir('plots'):
+        shutil.copy('plots/'+plot,path+'/plots')
+      shutil.rmtree('plots')
+
 
 
 if __name__=="__main__":

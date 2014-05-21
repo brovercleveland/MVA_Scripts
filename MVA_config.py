@@ -8,10 +8,11 @@ varNames = ['cos(#theta)', 'cos(#Theta)', '#phi', 'pT_{ll#gamma}/m_{ll#gamma}', 
 varDict = dict(zip(varList,varNames))
 
 selectionList = ['mumuGamma', 'eeGamma']
+sampleSuffix = '05-07-14_PhoMVA'
 
 for subsetSize in range(2, len(varList)+1):
   for subVarList in k_subsets(varList,subsetSize):
     print list(subVarList)
     if len(subVarList) == 7:
-      TrainMva(subVarList,varDict)
+      TrainMva(subVarList,varDict,sampleSuffix)
 
