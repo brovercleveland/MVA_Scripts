@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 import sys
 import os
+import atexit
 doGui = True
 if not doGui: sys.argv.append('-b')
 
 import ROOT
-sampleSuffix = '_newAnglesR9'
+sampleSuffix = '_05-07-14_PhoMVA'
 
 
 # if selecting training and testing events from the same file
 # one has to enter specify the number of events
 
-def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _selection = 'mumuGamma', _numSignalTrain = 0, _numBgTrain = 0, _numSignalTest = 0, _numBgTest = 0, _weightsSubDir = 'testWeights'):
+def TrainMva(varList, varDict, myMethodList = '', _signalName = 'ggM123', _bgName = 'allBG', _selection = 'mumuGamma', _numSignalTrain = 0, _numBgTrain = 0, _numSignalTest = 0, _numBgTest = 0, _weightsSubDir = 'testWeights'):
   ROOT.gROOT.ProcessLine('.L '+os.getenv('ROOTSYS')+'/tmva/test/TMVAGui.C')
   inputFilesDir = '../HiggsZGAnalyzer/mvaFiles/'
   outputWeightsDir = ''
@@ -27,7 +28,8 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _sele
   # Common weights for the entire sample
   # use with event weights that do not account for x-section,
   # or with fullWeight to avoid too small weights due to small sample scale factors (if such issues occur)
-  signalWeight = 1.0
+  signalWeight = 0.000587865168096
+  #signalWeight = 1.0
   backgroundWeight = 1.0
 
   sigFileName_train = ''
@@ -52,17 +54,17 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _sele
   elif _selection == 'eeGamma':
     fileSel = 'EE'
   if (_bgName == 'allBG'):
-    bgFileName_train = inputFilesDir + 'higgsTraining_'+fileSel+'2012ABCD_12-4-13_newAnglesR9_bg.root'
-    bgFileName_test = inputFilesDir + 'higgsSample_'+fileSel+'2012ABCD_12-4-13_newAnglesR9_bg.root '
+    bgFileName_train = inputFilesDir + 'higgsTraining_'+fileSel+'2012ABCD'+sampleSuffix+'_bg.root'
+    bgFileName_test = inputFilesDir + 'higgsSample_'+fileSel+'2012ABCD'+sampleSuffix+'_bg.root '
     bgFileName = inputFilesDir + 'zz.root' # when it is common.
   else:
     print 'Unknown background',_bgName,'Check Input!'
     return
 
 
-  if (_signalName == 'ggM125'):
-    sigFileName_train = inputFilesDir + 'higgsTraining_'+fileSel+'2012ABCD_12-4-13_newAnglesR9_signal.root'
-    sigFileName_test = inputFilesDir + 'higgsSample_'+fileSel+'2012ABCD_12-4-13_newAnglesR9_signal.root'
+  if (_signalName == 'ggM123'):
+    sigFileName_train = inputFilesDir + 'higgsTraining_'+fileSel+'2012ABCD'+sampleSuffix+'_signal.root'
+    sigFileName_test = inputFilesDir + 'higgsSample_'+fileSel+'2012ABCD'+sampleSuffix+'_signal.root'
     sigFileName = inputFilesDir + 'hzz125.root'
   else:
     print 'Unknown signal',_signalName,'Check Input!'
@@ -161,21 +163,8 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _sele
   # Define the input variables that shall be used for the MVA training
 
 
-  #factory.AddVariable('medisc','-log(Pb/(Ps+Pb))', '', 'F')
-  factory.AddVariable('smallTheta','cos(#theta)','','F')
-  factory.AddVariable('bigTheta','cos(#Theta)','','F')
-  factory.AddVariable('comPhi','#phi','rad','F')
-  #factory.AddVariable('GPtOM','pT_{#gamma}/m_{ll#gamma}','','F')
-  #factory.AddVariable('diffZGvectorOM','(pT_{#gamma}-pT_{ll})/m_{ll#gamma}','','F')
-  factory.AddVariable('threeBodyPtOM','pT_{ll#gamma}/m_{ll#gamma}','','F')
-  #factory.AddVariable('ZPtOM','pT_{ll}/m_{ll#gamma}','','F')
-  factory.AddVariable('GEta','#eta_{#gamma}','','F')
-  factory.AddVariable('l1Eta','#eta_{l1}','','F')
-  factory.AddVariable('l2Eta','#eta_{l2}','','F')
-  factory.AddVariable('R9var','R9','','F')
-  #factory.AddVariable('ZEta','#eta_{ll}','','F')
-  #factory.AddVariable('threeBodyEta','#eta_{ll#gamma}','','F')
-  #factory.AddVariable('GPtOHPt','pT_{#gamma}/pT_{ll#gamma}','','F')
+  for var in varList:
+    factory.AddVariable(var,varDict[var],'','F')
 
   factory.AddSpectator('threeBodyMass','m_{ll#gamma}','GeV')
 
@@ -398,7 +387,7 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _sele
   if (Use['BDTG']): # Gradient Boost
     factory.BookMethod(ROOT.TMVA.Types.kBDT, 'BDTG',
         #'!H:!V:NTrees=1000:BoostType=Grad:Shrinkage=0.10:UseBaggedGrad:GradBaggingFraction=0.5:nCuts=20:NNodesMax=8:nEventsMin=30')
-        '!H:!V:NTrees=1000:BoostType=Grad:Shrinkage=0.10:UseBaggedGrad:GradBaggingFraction=0.5:nCuts=2000:NNodesMax=8:IgnoreNegWeights:nEventsMin=80')
+        '!H:!V:NTrees=1200:BoostType=Grad:Shrinkage=0.10:UseBaggedGrad:GradBaggingFraction=0.7:nCuts=5000:NNodesMax=4:IgnoreNegWeights:nEventsMin=100')
         #'!H:V:NTrees=2000:BoostType=Grad:Shrinkage=0.05:nCuts=20:NNodesMax=10:UseBaggedGrad:GradBaggingFraction=0.50:IgnoreNegWeights')
     factory.PrintHelpMessage("BDTG")
 
@@ -458,12 +447,18 @@ def TrainMva(myMethodList = '', _signalName = 'ggM125', _bgName = 'allBG', _sele
   # Launch the GUI for the root macro
   # make it lightweight for batch jobs and skip loading this script . for interactive include
   # TMVAGui.C which is currently commented out.
+
   if doGui:
+    atexit.register(goodbye, sampleNames.rstrip('_'))
     ROOT.TMVAGui(outFileName)
     ROOT.gApplication.Run()
 
+def goodbye(plotsname):
+  os.rename('plots','plots_{0}'.format(plotsname))
+
+
 if __name__=="__main__":
-  TrainMva(_selection='eeGamma')
+  TrainMva(_selection='mumuGamma')
   #TrainMva()
 
 
