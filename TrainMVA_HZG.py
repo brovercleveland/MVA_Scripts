@@ -455,7 +455,8 @@ def TrainMva(varList, varDict, sampleSuffix, myMethodList = '', _signalName = 'g
 
   if doGui:
     #print '.x '+os.getenv('ROOTSYS')+'/tmva/test/mvaeffs.C("'+outFileName+' '+log+'")'
-    ROOT.gROOT.ProcessLine('.x '+os.getenv('ROOTSYS')+'/tmva/test/mvaeffs.C("'+outFileName+'","'+log+'","'+'_'.join(varList)+'")')
+    #ROOT.gROOT.ProcessLine('.x '+os.getenv('ROOTSYS')+'/tmva/test/mvaeffs.C("'+outFileName+'","'+log+'","'+'_'.join(varList)+'")')
+    ROOT.gROOT.ProcessLine('.x mvaeffs.C("'+outFileName+'","'+log+'","'+'_'.join(varList)+'")')
     #ROOT.mvaeffs(outFileName)
     #ROOT.TMVAGui(outFileName)
     #ROOT.gApplication.SetReturnFromRun(True)
