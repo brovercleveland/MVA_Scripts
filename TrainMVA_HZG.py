@@ -4,15 +4,17 @@ import os
 import shutil
 import atexit
 doGui = True
-if not doGui: sys.argv.append('-b')
+
+#if not doGui: sys.argv.append('-b')
 
 import ROOT
+#ROOT.gROOT.SetBatch(True)
 
 
 # if selecting training and testing events from the same file
 # one has to enter specify the number of events
 
-def TrainMva(varList, varDict, sampleSuffix, myMethodList = '', _signalName = 'ggM123', _bgName = 'allBG', _selection = 'mumuGamma', _numSignalTrain = 0, _numBgTrain = 0, _numSignalTest = 0, _numBgTest = 0):
+def TrainMva(varList, varDict, sampleSuffix, myMethodList = '', _signalName = 'ggM123', _bgName = 'allBG', _selection = 'mumuGamma', _numSignalTrain = 0, _numBgTrain = 0, _numSignalTest = 0, _numBgTest = 0, log = None):
 
 
   ROOT.gROOT.ProcessLine('.L '+os.getenv('ROOTSYS')+'/tmva/test/TMVAGui.C')
@@ -439,6 +441,10 @@ def TrainMva(varList, varDict, sampleSuffix, myMethodList = '', _signalName = 'g
 
   # Save the output
   outputFile.Close()
+  sigFile_train.Close()
+  sigFile_test.Close()
+  bgFile_train.Close()
+  bgFile_test.Close()
 
   print '==> Wrote root file:', outputFile.GetName()
   print '==> TrainMva is done!'
@@ -447,19 +453,20 @@ def TrainMva(varList, varDict, sampleSuffix, myMethodList = '', _signalName = 'g
   # make it lightweight for batch jobs and skip loading this script . for interactive include
   # TMVAGui.C which is currently commented out.
 
-  atexit.register(goodbye,outputDir)
   if doGui:
-    ROOT.TMVAGui(outFileName)
-    ROOT.gApplication.Run()
-
-def goodbye(path):
-  if os.path.exists('plots'):
-    if not os.path.exists(path+'/plots'):
-      shutil.move('plots',path+'/plots')
-    else:
-      for plot in os.listdir('plots'):
-        shutil.copy('plots/'+plot,path+'/plots')
-      shutil.rmtree('plots')
+    #print '.x '+os.getenv('ROOTSYS')+'/tmva/test/mvaeffs.C("'+outFileName+' '+log+'")'
+    ROOT.gROOT.ProcessLine('.x '+os.getenv('ROOTSYS')+'/tmva/test/mvaeffs.C("'+outFileName+'","'+log+'","'+'_'.join(varList)+'")')
+    #ROOT.mvaeffs(outFileName)
+    #ROOT.TMVAGui(outFileName)
+    #ROOT.gApplication.SetReturnFromRun(True)
+    #ROOT.gApplication.Terminate(0)
+    if os.path.exists('plots'):
+      if not os.path.exists(outputDir+'/plots'):
+        shutil.move('plots',outputDir+'/plots')
+      else:
+        for plot in os.listdir('plots'):
+          shutil.copy('plots/'+plot,outputDir+'/plots')
+        shutil.rmtree('plots')
 
 
 
