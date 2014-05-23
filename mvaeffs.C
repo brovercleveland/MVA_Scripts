@@ -348,8 +348,13 @@ void StatDialogMVAEffs::UpdateSignificanceHists()
          Float_t eS = info->origSigE->GetBinContent( i );
          Float_t S = eS * fNSignal;
          Float_t B = info->origBgdE->GetBinContent( i ) * fNBackground;
-         info->purS->SetBinContent( i, (S+B==0||B==0)?0:S/(S+B) );
-         info->sSig->SetBinContent( i, f.Eval(S,B) );
+         if (info->origBgdE->GetBinContent( i ) < 0.05){
+           info->purS->SetBinContent( i, 0); 
+           info->sSig->SetBinContent( i, 0 );
+          }else{
+           info->purS->SetBinContent( i, (S+B==0||B==0)?0:S/(S+B) );
+           info->sSig->SetBinContent( i, f.Eval(S,B) );
+          }
          info->effpurS->SetBinContent( i, eS*info->purS->GetBinContent( i ) );
       }
       

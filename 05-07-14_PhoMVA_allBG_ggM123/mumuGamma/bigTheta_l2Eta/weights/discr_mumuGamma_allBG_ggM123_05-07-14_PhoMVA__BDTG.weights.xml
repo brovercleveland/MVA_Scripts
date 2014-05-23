@@ -4,11 +4,11 @@
     <Info name="TMVA Release" value="4.1.2 [262402]"/>
     <Info name="ROOT Release" value="5.32/04 [335876]"/>
     <Info name="Creator" value="brianpollack"/>
-    <Info name="Date" value="Thu May 22 11:28:37 2014"/>
+    <Info name="Date" value="Fri May 23 10:08:47 2014"/>
     <Info name="Host" value="Darwin pb-d-128-141-108-211.cern.ch 11.4.2 Darwin Kernel Version 11.4.2: Thu Aug 23 16:25:48 PDT 2012; root:xnu-1699.32.7~1/RELEASE_X86_64 x86_64"/>
     <Info name="Dir" value="/Users/brianpollack/HZG_Analyzer/mva"/>
     <Info name="Training events" value="14810"/>
-    <Info name="TrainingTime" value="1.24760592e+01"/>
+    <Info name="TrainingTime" value="1.47650080e+01"/>
     <Info name="AnalysisType" value="Classification"/>
   </GeneralInfo>
   <Options>
@@ -49,8 +49,8 @@
     <Option name="NegWeightTreatment" modified="Yes">ignorenegweights</Option>
   </Options>
   <Variables NVar="2">
-    <Variable VarIndex="0" Expression="bigTheta" Label="bigTheta" Title="cos(#Theta)" Unit="" Internal="bigTheta" Type="F" Min="-9.99913692e-01" Max="9.99667525e-01"/>
-    <Variable VarIndex="1" Expression="l2Eta" Label="l2Eta" Title="#eta_{l2}" Unit="" Internal="l2Eta" Type="F" Min="-2.39879251e+00" Max="2.39809966e+00"/>
+    <Variable VarIndex="0" Expression="bigTheta" Label="bigTheta" Title="cos(#theta)" Unit="" Internal="bigTheta" Type="F" Min="-9.99913692e-01" Max="9.99667525e-01"/>
+    <Variable VarIndex="1" Expression="l2Eta" Label="l2Eta" Title="cos(#Theta)" Unit="" Internal="l2Eta" Type="F" Min="-2.39879251e+00" Max="2.39809966e+00"/>
   </Variables>
   <Spectators NSpec="1">
     <Spectator SpecIndex="0" Expression="threeBodyMass" Label="threeBodyMass" Title="m_{ll#gamma}" Unit="GeV" Internal="threeBodyMass" Type="F" Min="1.00191086e+02" Max="1.89993942e+02"/>

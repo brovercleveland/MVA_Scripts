@@ -6,6 +6,7 @@ import shutil
 import os
 
 varList = ['smallTheta', 'bigTheta', 'comPhi', 'threeBodyPtOM', 'GEta', 'l1Eta', 'l2Eta']
+#varList = ['bigTheta', 'l2Eta']
 varNames = ['cos(#theta)', 'cos(#Theta)', '#phi', 'pT_{ll#gamma}/m_{ll#gamma}', '#eta_{#gamma}', '#eta_{l1}', '#eta_{l2}']
 varDict = dict(zip(varList,varNames))
 

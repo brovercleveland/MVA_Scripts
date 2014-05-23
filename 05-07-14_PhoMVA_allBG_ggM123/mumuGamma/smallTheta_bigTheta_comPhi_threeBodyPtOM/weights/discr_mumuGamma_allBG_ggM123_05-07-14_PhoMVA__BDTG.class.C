@@ -10,7 +10,7 @@ Method         : BDT::BDTG
 TMVA Release   : 4.1.2         [262402]
 ROOT Release   : 5.32/04       [335876]
 Creator        : brianpollack
-Date           : Thu May 22 12:01:13 2014
+Date           : Thu May 22 17:28:21 2014
 Host           : Darwin pb-d-128-141-108-211.cern.ch 11.4.2 Darwin Kernel Version 11.4.2: Thu Aug 23 16:25:48 PDT 2012; root:xnu-1699.32.7~1/RELEASE_X86_64 x86_64
 Dir            : /Users/brianpollack/HZG_Analyzer/mva
 Training events: 14810

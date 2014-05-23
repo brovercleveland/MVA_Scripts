@@ -4,11 +4,11 @@
     <Info name="TMVA Release" value="4.1.2 [262402]"/>
     <Info name="ROOT Release" value="5.32/04 [335876]"/>
     <Info name="Creator" value="brianpollack"/>
-    <Info name="Date" value="Thu May 22 11:47:22 2014"/>
+    <Info name="Date" value="Thu May 22 17:13:05 2014"/>
     <Info name="Host" value="Darwin pb-d-128-141-108-211.cern.ch 11.4.2 Darwin Kernel Version 11.4.2: Thu Aug 23 16:25:48 PDT 2012; root:xnu-1699.32.7~1/RELEASE_X86_64 x86_64"/>
     <Info name="Dir" value="/Users/brianpollack/HZG_Analyzer/mva"/>
     <Info name="Training events" value="14810"/>
-    <Info name="TrainingTime" value="1.55065370e+01"/>
+    <Info name="TrainingTime" value="1.76752670e+01"/>
     <Info name="AnalysisType" value="Classification"/>
   </GeneralInfo>
   <Options>
