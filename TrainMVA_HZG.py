@@ -15,7 +15,7 @@ def TrainMva(varList, varDict, sampleSuffix, myMethodList = '', _signalName = 'g
 
 
   ROOT.gROOT.ProcessLine('.L '+os.getenv('ROOTSYS')+'/tmva/test/TMVAGui.C')
-  inputFilesDir = '../HiggsZGAnalyzer/mvaFiles/'
+  inputFilesDir = 'testTrainDir/'
 
   USE_SEPARATE_TRAIN_TEST_FILES = True
 
