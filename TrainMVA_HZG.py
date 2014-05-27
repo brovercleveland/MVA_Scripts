@@ -3,18 +3,15 @@ import sys
 import os
 import shutil
 import atexit
-doGui = True
 
-#if not doGui: sys.argv.append('-b')
 
 import ROOT
-#ROOT.gROOT.SetBatch(True)
 
 
 # if selecting training and testing events from the same file
 # one has to enter specify the number of events
 
-def TrainMva(varList, varDict, sampleSuffix, myMethodList = '', _signalName = 'ggM123', _bgName = 'allBG', _selection = 'mumuGamma', _numSignalTrain = 0, _numBgTrain = 0, _numSignalTest = 0, _numBgTest = 0, log = None):
+def TrainMva(varList, varDict, sampleSuffix, myMethodList = '', _signalName = 'ggM123', _bgName = 'allBG', _selection = 'mumuGamma', _numSignalTrain = 0, _numBgTrain = 0, _numSignalTest = 0, _numBgTest = 0, doGui = False, log = None):
 
 
   ROOT.gROOT.ProcessLine('.L '+os.getenv('ROOTSYS')+'/tmva/test/TMVAGui.C')
@@ -214,11 +211,15 @@ def TrainMva(varList, varDict, sampleSuffix, myMethodList = '', _signalName = 'g
   else:
     # I prefer using separate files for training/testing, so this is just for completeness.
     # note that here the signal and the bg cuts are the same, so we can use this form
-    _numSignalTrain = signal_train.GetEntries()
-    _numBgTrain = background_train.GetEntries()
-    _numSignalTest = signal_test.GetEntries()
-    _numBgTest = background_test.GetEntries()
-    myCut = ROOT.TCut('')
+    #_numSignalTrain = signal_train.GetEntries()
+    #_numBgTrain = background_train.GetEntries()
+    #_numSignalTest = signal_test.GetEntries()
+    #_numBgTest = background_test.GetEntries()
+    _numSignalTrain = 0
+    _numBgTrain = 0
+    _numSignalTest = 0
+    _numBgTest = 0
+    myCut = ROOT.TCut('threeBodyMass>115')
     factory.PrepareTrainingAndTestTree(myCut,
         _numSignalTrain, _numBgTrain, _numSignalTest, _numBgTest,
         'SplitMode=Random:NormMode=NumEvents:!V')
@@ -453,22 +454,22 @@ def TrainMva(varList, varDict, sampleSuffix, myMethodList = '', _signalName = 'g
   # make it lightweight for batch jobs and skip loading this script . for interactive include
   # TMVAGui.C which is currently commented out.
 
-  if doGui:
-    #print '.x '+os.getenv('ROOTSYS')+'/tmva/test/mvaeffs.C("'+outFileName+' '+log+'")'
+  if not doGui:
     #ROOT.gROOT.ProcessLine('.x '+os.getenv('ROOTSYS')+'/tmva/test/mvaeffs.C("'+outFileName+'","'+log+'","'+'_'.join(varList)+'")')
-    ROOT.gROOT.ProcessLine('.x mvaeffs.C("'+outFileName+'","'+log+'","'+'_'.join(varList)+'")')
-    #ROOT.mvaeffs(outFileName)
-    #ROOT.TMVAGui(outFileName)
+    ROOT.gROOT.ProcessLine('.x mvaeffs_v2.C("'+outFileName+'","'+log+'","'+'_'.join(varList)+'")')
     #ROOT.gApplication.SetReturnFromRun(True)
     #ROOT.gApplication.Terminate(0)
-    if os.path.exists('plots'):
-      if not os.path.exists(outputDir+'/plots'):
-        shutil.move('plots',outputDir+'/plots')
-      else:
-        for plot in os.listdir('plots'):
-          shutil.copy('plots/'+plot,outputDir+'/plots')
-        shutil.rmtree('plots')
+  else:
+    ROOT.TMVAGui(outFileName)
+    ROOT.gApplication.Run()
 
+  if os.path.exists('plots'):
+    if not os.path.exists(outputDir+'/plots'):
+      shutil.move('plots',outputDir+'/plots')
+    else:
+      for plot in os.listdir('plots'):
+        shutil.copy('plots/'+plot,outputDir+'/plots')
+      shutil.rmtree('plots')
 
 
 if __name__=="__main__":
