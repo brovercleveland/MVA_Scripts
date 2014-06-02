@@ -599,7 +599,7 @@ void mvaeffs_v2( TString fin = "TMVA.root", string _log = "log", string _varList
    gGui->UpdateSignificanceHists();
    gGui->DrawHistograms();
    gGui->RaiseDialog();   
-   file.Close()
+   file.Close();
    //gApplication->SetReturnFromRun(kTRUE);
    //gApplication->Terminate(0);
 }

@@ -12,7 +12,8 @@ def VarOptimizer():
   varNames = ['cos(#theta)', 'cos(#Theta)', '#phi', 'pT_{ll#gamma}/m_{ll#gamma}', '#eta_{#gamma}', '#eta_{l1}', '#eta_{l2}']
   varDict = dict(zip(varList,varNames))
 
-  selectionList = ['mumuGamma', 'eeGamma']
+  #selectionList = ['mumuGamma', 'eeGamma']
+  selectionList = ['eeGamma']
   sampleSuffix = '05-24-14_PhoMVA'
   bgName = 'allBG'
 #selection = 'mumuGamma'
