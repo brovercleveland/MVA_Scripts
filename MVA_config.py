@@ -14,7 +14,7 @@ def VarOptimizer():
 
   #selectionList = ['mumuGamma', 'eeGamma']
   selectionList = ['eeGamma']
-  sampleSuffix = '05-24-14_PhoMVA'
+  sampleSuffix = '07-6-14_PhoMVA'
   bgName = 'allBG'
 #selection = 'mumuGamma'
 
@@ -37,19 +37,22 @@ def VarOptimizer():
     os.remove('mvaeff.out')
 
 def Gui():
-  varList_mu = ['smallTheta', 'bigTheta', 'threeBodyPtOM', 'l1Eta', 'l2Eta']
-  varNames_mu = ['cos(#theta)', 'cos(#Theta)', 'pT_{ll#gamma}/m_{ll#gamma}', '#eta_{l1}', '#eta_{l2}']
-  varList_el = ['threeBodyPtOM', 'l2Eta', 'GEta', 'bigTheta', 'smallTheta', 'l1Eta']
-  varNames_el = ['pT_{ll#gamma}/m_{ll#gamma}', '#eta_{l2}', '#eta_{#gamma}', 'cos(#Theta)', 'cos(#theta)', '#eta_{l1}']
+  #varList_mu = ['comPhi', 'threeBodyPtOM', 'l2Eta', 'GEta', 'bigTheta', 'l1Eta']
+  comPhi_threeBodyPtOM_l2Eta_GEta_bigTheta_smallTheta_l1Eta
+  #varNames_mu = ['#phi', 'pT_{ll#gamma}/m_{ll#gamma}', '#eta_{l2}', '#eta_{#gamma}', 'cos(#Theta)', '#eta_{l1}']
+  varList_mu= ['smallTheta', 'bigTheta', 'comPhi', 'threeBodyPtOM', 'GEta', 'l1Eta', 'l2Eta']
+  varNames_mu = ['cos(#theta)', 'cos(#Theta)', '#phi', 'pT_{ll#gamma}/m_{ll#gamma}', '#eta_{#gamma}', '#eta_{l1}', '#eta_{l2}']
+  #varList_el = ['threeBodyPtOM', 'l2Eta', 'GEta', 'bigTheta', 'smallTheta', 'l1Eta']
+  #varNames_el = ['pT_{ll#gamma}/m_{ll#gamma}', '#eta_{l2}', '#eta_{#gamma}', 'cos(#Theta)', 'cos(#theta)', '#eta_{l1}']
 
   varDict_mu = dict(zip(varList_mu,varNames_mu))
-  varDict_el = dict(zip(varList_el,varNames_el))
+  #varDict_el = dict(zip(varList_el,varNames_el))
 
   sampleSuffix = '05-24-14_PhoMVA'
   bgName = 'allBG'
 
   TrainMva(varList_mu,varDict_mu,sampleSuffix,_selection = 'mumuGamma',doGui = True)
-  TrainMva(varList_el,varDict_el,sampleSuffix,_selection = 'eeGamma', doGui = True)
+  #TrainMva(varList_el,varDict_el,sampleSuffix,_selection = 'eeGamma', doGui = True)
 
 if __name__ == "__main__":
   def Wrong():
